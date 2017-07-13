@@ -18,6 +18,8 @@ Plug 'wellsjo/vim-save-cursor-position'
 Plug 'zanglg/nova.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'airblade/vim-gitgutter'
+Plug 'neovim/node-host', { 'do': 'npm install' }
+Plug 'vimlab/mdown.vim', { 'do': 'npm install' }
 call plug#end()
 
 " Colorschemes
@@ -46,7 +48,7 @@ highlight CursorColumn ctermfg=white ctermbg=red
 
 " highlight all tabs and trailing whitespace characters.
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-match ExtraWhitespace /\s\+$\|\t/
+match ExtraWhitespace /\s\+$\ "|\t/
 
 "clipboard
 set clipboard=unnamed
@@ -60,6 +62,9 @@ set nolist
 set ruler
 set showcmd
 set colorcolumn=120
+
+" window split character
+" set fillchars=vert:\|
 
 " As you go substitution
 set inccommand=split
@@ -91,7 +96,7 @@ set ignorecase
 set smartcase
 let g:terminal_scrollback_buffer_size = 10000
 
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 " ale
 let g:ale_linters = {
