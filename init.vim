@@ -4,22 +4,28 @@ Plug 'tpope/vim-fugitive'
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'majutsushi/tagbar'
-Plug 'pangloss/vim-javascript'
-Plug 'Shougo/deoplete.nvim'
-Plug 'carlitux/deoplete-ternjs'
-Plug 'jacoborus/tender'
-Plug 'craigemery/vim-autotag'
-Plug 'codelibra/log4jhighlighter'
-Plug 'sidorares/node-vim-debugger'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'w0rp/ale'
 Plug 'cloudhead/neovim-fuzzy'
 Plug 'wellsjo/vim-save-cursor-position'
 Plug 'zanglg/nova.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'airblade/vim-gitgutter'
-Plug 'neovim/node-host', { 'do': 'npm install' }
 Plug 'vimlab/mdown.vim', { 'do': 'npm install' }
+Plug 'Shougo/deoplete.nvim'
+"
+" Javascript/NodeJS
+Plug 'pangloss/vim-javascript'
+Plug 'carlitux/deoplete-ternjs'
+Plug 'jacoborus/tender'
+Plug 'craigemery/vim-autotag'
+Plug 'codelibra/log4jhighlighter'
+Plug 'sidorares/node-vim-debugger'
+Plug 'neovim/node-host', { 'do': 'npm install' }
+
+" Golang
+Plug 'jodosha/vim-godebug'
+Plug 'fatih/vim-go'
+Plug 'zchee/deoplete-go'
 call plug#end()
 
 " Colorschemes
@@ -99,9 +105,11 @@ let g:terminal_scrollback_buffer_size = 10000
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 " ale
+" ale and vim-go don't seem to like each other very much...
 let g:ale_linters = {
          \   'javascript': ['eslint'],
          \   'yaml': ['yamllint'],
+         \   'go': [],
          \}
 let g:ale_sign_column_always = 1
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
@@ -109,7 +117,11 @@ let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 " Airline
 autocmd VimEnter * AirlineToggleWhitespace
 let g:airline#extensions#tagbar#enabled = 1
-let g:airline_section_y = '%{ALEGetStatusLine()}'
+" let g:airline_section_y = '%{ALEGetStatusLine()}'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
+
+" go stuff
+let g:go_fmt_command = "goimports" " auto format imports
+let g:go_auto_type_info = 1 " type info in status line
