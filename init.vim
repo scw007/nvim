@@ -1,6 +1,9 @@
 call plug#begin()
+Plug 'pseewald/vim-anyfold'
 Plug 'tpope/vim-commentary'
+Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -11,27 +14,31 @@ Plug 'wellsjo/vim-save-cursor-position'
 Plug 'zanglg/nova.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'airblade/vim-gitgutter'
-Plug 'vimlab/mdown.vim', { 'do': 'npm install' }
+Plug 'lervag/vimtex'
+" Plug 'kana/vim-textobj-fold'
+" Plug 'vimlab/mdown.vim', { 'do': 'npm install' }
 Plug 'Shougo/deoplete.nvim'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-Plug 'luochen1990/rainbow'
+Plug 'eapache/rainbow_parentheses.vim'
+Plug 'chrisbra/csv.vim'
+Plug 'michaeljsmith/vim-indent-object'
 
 " Javascript/NodeJS
 Plug 'pangloss/vim-javascript'
 Plug 'carlitux/deoplete-ternjs'
-Plug 'jacoborus/tender'
+" Plug 'jacoborus/tender'
 Plug 'craigemery/vim-autotag'
-Plug 'codelibra/log4jhighlighter'
-Plug 'sidorares/node-vim-debugger'
-Plug 'neovim/node-host', { 'do': 'npm install' }
+" Plug 'sidorares/node-vim-debugger'
+" Plug 'neovim/node-host', { 'do': 'npm install' }
 
 " Typescript
-Plug 'leafgarland/typescript-vim'
+" Plug 'leafgarland/typescript-vim'
 
 " Golang
-Plug 'jodosha/vim-godebug'
 Plug 'fatih/vim-go'
-Plug 'zchee/deoplete-go'
+" Plug 'zchee/deoplete-go'
+Plug 'jodosha/vim-godebug'
+Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 call plug#end()
 
 " Colorschemes
@@ -53,6 +60,7 @@ call plug#end()
 
 set termguicolors
 colorscheme nova
+" colorscheme jellybeans
 set background=dark
 
 highlight Cursorline ctermfg=white ctermbg=red
@@ -66,6 +74,7 @@ match ExtraWhitespace /\s\+$\ "|\t/
 set clipboard=unnamed
 
 " Appearance
+set cmdheight=2
 set number " line numbers
 set wrap
 set textwidth=0 wrapmargin=0
@@ -87,6 +96,10 @@ nnoremap <leader>t :TagbarToggle<CR>
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>b :bnext<CR>
+nnoremap <Leader>p :bprevious<CR>
+nnoremap <Leader>g :tabnext<CR>
+
 " Window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -117,15 +130,13 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 set mouse=a
 
 " ale
-" ale and vim-go don't seem to like each other very much...
-         " \   'typescript': ['eslint,tslint'],
 let g:ale_fixers = {
          \   'javascript': ['eslint']
          \}
 let g:ale_linters = {
          \   'typescript': ['eslint, tsserver'],
          \   'javascript': ['eslint'],
-         \   'go': ['gometalinter']
+         \   'go': ['vet', 'gometalinter', 'ineffassign']
          \}
 let g:ale_go_gometalinter_options = '
             \ --aggregate
@@ -134,35 +145,40 @@ let g:ale_go_gometalinter_options = '
             \ --tests
             \ --vendor
             \ '
-'
-let g:ale_lint_on_text_changed = 0
+" '
+" let g:ale_lint_on_text_changed = 0
 let g:ale_fix_on_save = 1
-let g:ale_lint_on_enter = 0
+" let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
 let g:ale_sign_column_always = 1
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 
 " Airline
 autocmd VimEnter * AirlineToggleWhitespace
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
 let g:airline#extensions#tagbar#enabled = 1
-" let g:airline_section_y = '%{ALEGetStatusLine()}'
 let g:airline_theme='dark'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
+" let g:deoplete#sources#go#gocode_binary = '/Users/stevenwhitehead/gocode'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " go stuff
 let g:go_fmt_command = "goimports" " auto format imports
-let g:go_auto_type_info = 1 " type info in status line
+" let g:go_auto_type_info = 1 " type info in status line
 let g:go_list_type = "quickfix"
 " go linter stuff
-" let g:go_metalinter_autosave = 1
-" let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_metalinter_enabled = ['vet', 'golint', 'deadcode', 'errcheck', 'gas', 'goconst',
-                              \ 'gosimple', 'gotype', 'ineffassign', 'interfacer', 
+let g:go_metalinter_enabled = ['vet', 'golint', 'deadcode', 'errcheck', 'goconst',
+                              \ 'gosimple', 'ineffassign', 'interfacer',
                               \ 'staticcheck', 'structcheck', 'unconvert', 'varcheck', 'vetshadow'
                               \  ]
-let g:go_auto_sameids = 1
+" let g:go_auto_sameids = 1
 " go highlight extras
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
@@ -172,8 +188,72 @@ let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
-" let g:go_fold_enable = 1
-let g:go_fmt_fail_silently = 1
+" let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
+let g:go_fmt_experimental = 1
+" set foldmethod=syntax
+" set foldmethod=manual
+" set foldmethod=indent
+" set foldlevelstart=99
+" set foldmethod=marker
+" set foldmarker={,}
+" set foldlevel=1
+" set viewoptions=cursor,folds,slash,unix
+" let g:go_fmt_fail_silently = 1
 au FileType go nmap <F9> :GoCoverageToggle -short<cr>
 
-let g:rainbow_active = 1
+" anyfold
+" let anyfold_activate=1
+" set foldlevel=9999
+" set foldlevelstart=999999
+
+" rainbow
+" let g:rainbow_active = 1
+let g:rbpt_colorpairs = [
+    \ ['brown',       'SeaGreen3'],
+    \ ['gray',        'firebrick3'],
+    \ ['cyan',        'DarkOrchid3'],
+    \ ]
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+"" stuff i stole from joachim
+" --------------------------
+" Strip Trailing White Space
+" --------------------------
+" Deleting trailing whitespace
+" From http://vimbits.com/bits/377
+" Preserves/Saves the state, executes a command, and returns to the saved
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+"strip all trailing white space
+function! StripTrailingWhiteSpace()
+  call Preserve("%s/\\s\\+$//e")
+endfunction
+
+set splitbelow " New splits open below and right
+set splitright
+set fillchars=vert:\│  " No character in split separator
+set showmode
+"
+" Strip trailing white space
+nmap <silent> <leader>w :call StripTrailingWhiteSpace() <CR>
+
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+
