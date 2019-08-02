@@ -7,22 +7,25 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/ScrollColors' " test colorchemes with :SCROLL
 Plug 'w0rp/ale'
-Plug 'cloudhead/neovim-fuzzy'
+" Plug 'cloudhead/neovim-fuzzy'
 Plug 'wellsjo/vim-save-cursor-position'
 Plug 'zanglg/nova.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'airblade/vim-gitgutter'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'Shougo/echodoc.vim',
+" Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'eapache/rainbow_parentheses.vim'
+Plug 'Shougo/denite.nvim'
 
 " Javascript/NodeJS
 Plug 'pangloss/vim-javascript'
-Plug 'carlitux/deoplete-ternjs'
+" Plug 'carlitux/deoplete-ternjs'
 
 " Golang
 Plug 'fatih/vim-go'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+" Plug 'zchee/deoplete-go', { 'do': 'make'}
 Plug 'jodosha/vim-godebug'
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 call plug#end()
@@ -97,7 +100,7 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 
 set mouse=a
 
-set foldmethod=indent
+" set foldmethod=indent
 " set foldmethod=syntax
 
 set shortmess=a
@@ -106,10 +109,12 @@ set shortmess=a
 let g:ale_fixers = {
          \   'javascript': ['eslint']
          \}
+
+         " \   'go': ['govet', 'gometalinter']
 let g:ale_linters = {
          \   'typescript': ['eslint, tsserver'],
          \   'javascript': ['eslint'],
-         \   'go': ['govet', 'gometalinter']
+         \   'go': ['gometalinter']
          \}
 
 let g:ale_go_gometalinter_options = "
@@ -137,12 +142,14 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_section_c = '%t'
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_theme='dark'
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " Use deoplete.
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const'] " this starts the crashess
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#builtin_objects = 1
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const'] " this starts the crashess
+" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" let g:deoplete#sources#go#builtin_objects = 1
 
 set completeopt+=noselect
 
@@ -220,3 +227,6 @@ autocmd BufWinLeave * call clearmatches()
 
 let g:matchup_matchparen_deferred = 1
 let g:matchup_matchparen_hi_surround_always = 1
+
+" Denite
+" nmap ; :Denite buffer -split=floating -winrow=1<CR>
