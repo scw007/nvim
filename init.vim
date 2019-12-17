@@ -4,34 +4,28 @@ Plug 'tpope/vim-fugitive'
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'majutsushi/tagbar'
-Plug 'vim-scripts/ScrollColors' " test colorchemes with :SCROLL
-Plug 'w0rp/ale'
-" Plug 'cloudhead/neovim-fuzzy'
 Plug 'wellsjo/vim-save-cursor-position'
-Plug 'zanglg/nova.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'airblade/vim-gitgutter'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 Plug 'Shougo/echodoc.vim',
-" Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'chrisbra/Colorizer'
 Plug 'eapache/rainbow_parentheses.vim'
-Plug 'Shougo/denite.nvim'
-
+" Plug 'Shougo/denite.nvim'
+Plug 'lervag/vimtex'
 " Javascript/NodeJS
 Plug 'pangloss/vim-javascript'
-" Plug 'carlitux/deoplete-ternjs'
+Plug 'mxw/vim-jsx'
 
 " Golang
 Plug 'fatih/vim-go'
-" Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'jodosha/vim-godebug'
+" Plug 'jodosha/vim-godebug'
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 call plug#end()
 
-colorscheme lucario
 
+" Color stuff
+colorscheme lucario
 highlight Pmenu ctermbg=black
 highlight Cursorline ctermfg=white ctermbg=red
 highlight CursorColumn ctermfg=white ctermbg=red
@@ -69,6 +63,8 @@ nnoremap <Leader>b :bnext<CR>
 nnoremap <Leader>p :bprevious<CR>
 nnoremap <Leader>g :tabnext<CR>
 nnoremap <Leader>r :GoReferrers<CR>
+nnoremap <Leader>i :set foldmethod=indent<CR>
+nmap <silent> gi :GoInfo<CR>
 
 " Window navigation
 nnoremap <C-h> <C-w>h
@@ -81,14 +77,9 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 
-" json pretty print
-" command! -range -nargs=0 -bar JsonTool <line1>,<line2>!python -m json.tool
-" nnoremap <leader>j :JsonTool<CR>
-
 set expandtab
 set shiftwidth=4
 set tabstop=3
-au FileType javascript setl shiftwidth=3
 
 set ignorecase
 set smartcase
@@ -100,56 +91,92 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 
 set mouse=a
 
-" set foldmethod=indent
-" set foldmethod=syntax
-
 set shortmess=a
-
-" ale
-let g:ale_fixers = {
-         \   'javascript': ['eslint']
-         \}
-
-         " \   'go': ['govet', 'gometalinter']
-let g:ale_linters = {
-         \   'typescript': ['eslint, tsserver'],
-         \   'javascript': ['eslint'],
-         \   'go': ['gometalinter']
-         \}
-
-let g:ale_go_gometalinter_options = "
-            \ --disable-all --deadline=5s
-            \ --vendor
-            \ --linter='gofmt:gofmt -s -e:^(?P<path>.*?\.go)$' --enable=gofmt
-            \ --linter='gocyclo:gocyclo -over 10:^(?P<cyclo>\d+)\s+\S+\s(?P<function>\S+)\s+(?P<path>.*?\.go):(?P<line>\d+):(\d+)$' --enable=gocyclo
-            \ --linter='goconst:goconst -min-occurrences 3 -min-length 4:PATH:LINE:COL:MESSAGE' --enable=goconst
-            \ --linter='golint:golint -set_exit_status:PATH:LINE:COL:MESSAGE' --enable=golint
-            \ --linter='ineffassign:ineffassign -n:PATH:LINE:COL:MESSAGE' --enable=ineffassign
-            \ --linter='varcheck:varcheck:^(?:[^:]+: )?(?P<path>.*?\.go):(?P<line>\d+):(?P<col>\d+):\s*(?P<message>.*)$' --enable=varcheck
-            \ --linter='errcheck:errcheck -ignoretests:PATH:LINE:COL:MESSAGE' --enable=errcheck
-            \ --linter='lll:lll --maxlength 100 -g:PATH:LINE:MESSAGE' --enable=lll
-            \ "
-
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_save = 1
-let g:ale_sign_column_always = 1
-let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 
 " Airline
 autocmd VimEnter * AirlineToggleWhitespace
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_section_c = '%t'
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_theme='dark'
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
-" Use deoplete.
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const'] " this starts the crashess
-" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-" let g:deoplete#sources#go#builtin_objects = 1
+
+" coc.vim
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+" Better display for messages
+set cmdheight=3
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use U to show documentation in preview window
+nnoremap <silent> U :call <SID>show_documentation()<CR>
+
+" Remap for rename current word
+" nmap <leader>rn <Plug>(coc-rename)
+"
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" end coc.vim
 
 set completeopt+=noselect
 
@@ -173,7 +200,8 @@ let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 let g:go_fmt_experimental = 1
-" let g:go_fmt_fail_silently = 1
+
+
 
 " rainbow
 " let g:rainbow_active = 1
@@ -228,5 +256,89 @@ autocmd BufWinLeave * call clearmatches()
 let g:matchup_matchparen_deferred = 1
 let g:matchup_matchparen_hi_surround_always = 1
 
-" Denite
-" nmap ; :Denite buffer -split=floating -winrow=1<CR>
+" -----------------------------------------------------------------------------
+"  VIMTEX OPTIONS
+"  ----------------------------------------------------------------------------
+if has('unix')
+    if has('mac')
+        let g:vimtex_view_method = "skim"
+        let g:vimtex_view_general_viewer
+                \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+        let g:vimtex_view_general_options = '-r @line @pdf @tex'
+
+        " This adds a callback hook that updates Skim after compilation
+        let g:vimtex_compiler_callback_hooks = ['UpdateSkim']
+        function! UpdateSkim(status)
+            if !a:status | return | endif
+
+            let l:out = b:vimtex.out()
+            let l:tex = expand('%:p')
+            let l:cmd = [g:vimtex_view_general_viewer, '-r']
+            if !empty(system('pgrep Skim'))
+            call extend(l:cmd, ['-g'])
+            endif
+            if has('nvim')
+            call jobstart(l:cmd + [line('.'), l:out, l:tex])
+            elseif has('job')
+            call job_start(l:cmd + [line('.'), l:out, l:tex])
+            else
+            call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+            endif
+        endfunction
+    else
+        let g:latex_view_general_viewer = "zathura"
+        let g:vimtex_view_method = "zathura"
+    endif
+elseif has('win32')
+
+endif
+
+let g:tex_flavor = "latex"
+let g:vimtex_quickfix_open_on_warning = 0
+let g:vimtex_quickfix_mode = 2
+if has('nvim')
+    let g:vimtex_compiler_progname = 'nvr'
+endif
+
+" One of the neosnippet plugins will conceal symbols in LaTeX which is
+" confusing
+let g:tex_conceal = ""
+
+" Can hide specifc warning messages from the quickfix window
+" Quickfix with Neovim is broken or something
+" https://github.com/lervag/vimtex/issues/773
+let g:vimtex_quickfix_latexlog = {
+            \ 'default' : 1,
+            \ 'fix_paths' : 0,
+            \ 'general' : 1,
+            \ 'references' : 1,
+            \ 'overfull' : 1,
+            \ 'underfull' : 1,
+            \ 'font' : 1,
+            \ 'packages' : {
+            \   'default' : 1,
+            \   'natbib' : 1,
+            \   'biblatex' : 1,
+            \   'babel' : 1,
+            \   'hyperref' : 1,
+            \   'scrreprt' : 1,
+            \   'fixltx2e' : 1,
+            \   'titlesec' : 1,
+            \ },
+            \}
+
+""" end vimtex
+
+let g:colorizer_auto_filetype='go,css,html,js'
+
+set foldmethod=syntax
+set foldnestmax=10
+" set nofoldenable
+set foldlevel=1
+
+" Prevent vimgo from auto folding on save
+" augroup remember_folds
+"   autocmd!
+"   autocmd BufWinLeave * mkview
+"   autocmd BufWinEnter * silent! loadview
+" augroup END
