@@ -27,8 +27,8 @@ call plug#end()
 " Color stuff
 colorscheme lucario
 highlight Pmenu ctermbg=black
-highlight Cursorline ctermfg=white ctermbg=red
-highlight CursorColumn ctermfg=white ctermbg=red
+highlight Cursorline ctermfg=white ctermbg=black
+highlight CursorColumn ctermfg=white ctermbg=black
 highlight Search guibg='Purple' guifg='NONE'
 
 " highlight all tabs and trailing whitespace characters.
@@ -135,37 +135,35 @@ set signcolumn=yes
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" nmap <silent> [c <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gd <Plug>(coc-definition)
 " nmap <silent> gy <Plug>(coc-type-definition)
 " nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gr <Plug>(coc-references)
 
 " Use U to show documentation in preview window
-nnoremap <silent> U :call <SID>show_documentation()<CR>
+" nnoremap <silent> U :call <SID>show_documentation()<CR>
 
 " Remap for rename current word
 " nmap <leader>rn <Plug>(coc-rename)
 "
 
 " Remap for format selected region
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" vmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -180,13 +178,14 @@ endfunction
 
 set completeopt+=noselect
 
-let g:python3_host_prog = '/usr/local/bin/python3'
+" let g:python3_host_prog = '/usr/local/bin/python'
 
 " go stuff
 let g:go_fmt_command = "goimports" " auto format imports
+let g:go_fmt_experimental = 1
 " let g:go_auto_type_info = 1 " type info in status line
 set updatetime=100
-let g:go_list_type = "quickfix"
+" let g:go_list_type = "quickfix"
 let g:go_statusline_show = 1
 " let g:go_auto_sameids = 1
 " go highlight extras
@@ -199,7 +198,6 @@ let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
-let g:go_fmt_experimental = 1
 
 
 
@@ -331,10 +329,10 @@ let g:vimtex_quickfix_latexlog = {
 
 let g:colorizer_auto_filetype='go,css,html,js'
 
-set foldmethod=syntax
+set foldlevelstart=10
 set foldnestmax=10
-" set nofoldenable
-set foldlevel=1
+set foldlevel=2
+set foldmethod=indent
 
 " Prevent vimgo from auto folding on save
 " augroup remember_folds
@@ -342,3 +340,5 @@ set foldlevel=1
 "   autocmd BufWinLeave * mkview
 "   autocmd BufWinEnter * silent! loadview
 " augroup END
+"
+let $GINKGO_EDITOR_INTEGRATION = "true"
