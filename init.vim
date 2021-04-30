@@ -7,20 +7,21 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'wellsjo/vim-save-cursor-position'
 Plug 'thinca/vim-visualstar'
 Plug 'airblade/vim-gitgutter'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Shougo/echodoc.vim',
 Plug 'chrisbra/Colorizer'
 Plug 'eapache/rainbow_parentheses.vim'
+Plug 'hashivim/vim-terraform'
 " Plug 'Shougo/denite.nvim'
 Plug 'lervag/vimtex'
-" Javascript/NodeJS
+" " Javascript/NodeJS
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
-" Golang
-Plug 'fatih/vim-go'
-" Plug 'jodosha/vim-godebug'
-Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+" " Golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" " Plug 'jodosha/vim-godebug'
+" Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 call plug#end()
 
 
@@ -139,7 +140,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-" nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)
 " nmap <silent> gy <Plug>(coc-type-definition)
 " nmap <silent> gi <Plug>(coc-implementation)
 " nmap <silent> gr <Plug>(coc-references)
@@ -181,12 +182,16 @@ set completeopt+=noselect
 " let g:python3_host_prog = '/usr/local/bin/python'
 
 " go stuff
-let g:go_fmt_command = "goimports" " auto format imports
-let g:go_fmt_experimental = 1
+" disable vim-go :GoDef short cut (gd)
+" this is handled by LanguageClient [LC]
+let g:go_def_mapping_enabled = 0
+" let g:go_gopls_enabled
+" let g:go_fmt_command = "gofmt" " auto format imports
+" let g:go_fmt_experimental = 1
 " let g:go_auto_type_info = 1 " type info in status line
-set updatetime=100
+" set updatetime=1
 " let g:go_list_type = "quickfix"
-let g:go_statusline_show = 1
+" let g:go_statusline_show = 1
 " let g:go_auto_sameids = 1
 " go highlight extras
 let g:go_highlight_build_constraints = 1
@@ -244,12 +249,12 @@ set showmode
 " Strip trailing white space
 nmap <silent> <leader>w :call StripTrailingWhiteSpace() <CR>
 
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+" highlight ExtraWhitespace ctermbg=red guibg=red
+" match ExtraWhitespace /\s\+$/
+" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+" autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+" autocmd BufWinLeave * call clearmatches()
 
 let g:matchup_matchparen_deferred = 1
 let g:matchup_matchparen_hi_surround_always = 1
