@@ -12,6 +12,11 @@ Plug 'Shougo/echodoc.vim',
 Plug 'chrisbra/Colorizer'
 Plug 'eapache/rainbow_parentheses.vim'
 Plug 'hashivim/vim-terraform'
+" Plug 'wellle/context.vim'
+" Plug 'camspiers/lens.vim'
+" Plug 'Yggdroot/indentLine'
+" Plug 'lukas-reineke/indent-blankline.nvim'
+" Plug 'mcchrish/nnn.vim'
 " Plug 'Shougo/denite.nvim'
 Plug 'lervag/vimtex'
 " " Javascript/NodeJS
@@ -164,7 +169,7 @@ nmap <silent> gd <Plug>(coc-definition)
 " Do default action for previous item.
 " nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 
-" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -334,10 +339,10 @@ let g:vimtex_quickfix_latexlog = {
 
 let g:colorizer_auto_filetype='go,css,html,js'
 
-set foldlevelstart=10
-set foldnestmax=10
-set foldlevel=2
-set foldmethod=indent
+" set foldlevelstart=10
+" set foldnestmax=10
+" set foldlevel=2
+" set foldmethod=indent
 
 " Prevent vimgo from auto folding on save
 " augroup remember_folds
