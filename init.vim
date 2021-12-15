@@ -190,14 +190,7 @@ set completeopt+=noselect
 " disable vim-go :GoDef short cut (gd)
 " this is handled by LanguageClient [LC]
 let g:go_def_mapping_enabled = 0
-" let g:go_gopls_enabled
-" let g:go_fmt_command = "gofmt" " auto format imports
-" let g:go_fmt_experimental = 1
-" let g:go_auto_type_info = 1 " type info in status line
-" set updatetime=1
 " let g:go_list_type = "quickfix"
-" let g:go_statusline_show = 1
-" let g:go_auto_sameids = 1
 " go highlight extras
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
