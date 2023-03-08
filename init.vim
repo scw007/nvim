@@ -19,14 +19,10 @@ Plug 'hashivim/vim-terraform'
 " Plug 'mcchrish/nnn.vim'
 " Plug 'Shougo/denite.nvim'
 Plug 'lervag/vimtex'
-" " Javascript/NodeJS
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-
-" " Golang
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" " Plug 'jodosha/vim-godebug'
-" Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+" Plug 'jodosha/vim-godebug'
 call plug#end()
 
 
@@ -62,8 +58,6 @@ let mapleader = "\<Space>"
 nnoremap <leader>e :Explore<CR>
 nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>s :split<CR>
-nnoremap <leader>t :TagbarToggle<CR>
-nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 nnoremap <Leader>b :bnext<CR>
 nnoremap <Leader>p :bprevious<CR>
@@ -96,23 +90,24 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 		  \,sm:block-blinkwait175-blinkoff150-blinkon175
 
 set mouse=a
-
 set shortmess=a
 
 " Airline
-autocmd VimEnter * AirlineToggleWhitespace
+" autocmd VimEnter * AirlineToggleWhitespace
 " Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_section_c = '%t'
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_theme='dark'
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#formatter = 'unique_tail'
+" let g:airline_section_c = '%t'
+" let g:airline#extensions#tagbar#enabled = 1
+" let g:airline_theme='dark'
+" let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+" let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 " coc.vim
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -147,12 +142,10 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
-
-" Use U to show documentation in preview window
-" nnoremap <silent> U :call <SID>show_documentation()<CR>
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for rename current word
 " nmap <leader>rn <Plug>(coc-rename)
@@ -204,7 +197,6 @@ let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 
 
-
 " rainbow
 " let g:rainbow_active = 1
 let g:rbpt_colorpairs = [
@@ -244,16 +236,6 @@ set splitbelow " New splits open below and right
 set splitright
 set fillchars=vert:\│  " No character in split separator
 set showmode
-"
-" Strip trailing white space
-nmap <silent> <leader>w :call StripTrailingWhiteSpace() <CR>
-
-" highlight ExtraWhitespace ctermbg=red guibg=red
-" match ExtraWhitespace /\s\+$/
-" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-" autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-" autocmd BufWinLeave * call clearmatches()
 
 let g:matchup_matchparen_deferred = 1
 let g:matchup_matchparen_hi_surround_always = 1
@@ -331,12 +313,7 @@ let g:vimtex_quickfix_latexlog = {
 
 """ end vimtex
 
-let g:colorizer_auto_filetype='go,css,html,js'
-
-" set foldlevelstart=10
-" set foldnestmax=10
-" set foldlevel=2
-" set foldmethod=indent
+" let g:colorizer_auto_filetype='go,css,html,js'
 
 " Prevent vimgo from auto folding on save
 " augroup remember_folds
