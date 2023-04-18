@@ -26,13 +26,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 
-" Color stuff
-colorscheme lucario
-highlight Pmenu ctermbg=black
-highlight Cursorline ctermfg=white ctermbg=black
-highlight CursorColumn ctermfg=white ctermbg=black
-highlight Search guibg='Purple' guifg='NONE'
-
 " highlight all tabs and trailing whitespace characters.
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$\ "|\t/
@@ -149,7 +142,6 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for rename current word
 " nmap <leader>rn <Plug>(coc-rename)
-"
 
 " Remap for format selected region
 " vmap <leader>f  <Plug>(coc-format-selected)
