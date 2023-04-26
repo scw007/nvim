@@ -1,21 +1,2 @@
 {
-    "languageserver": {
-        "golang": {
-          "command": "gopls",
-          "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-          "filetypes": ["go"]
-        },
-        "metals": {
-          "command": "metals-vim",
-          "rootPatterns": ["build.sbt"],
-          "filetypes": ["scala", "sbt"]
-        }
-    },
-    "eslint.autoFixOnSave": true,
-    "yaml.format.enable": true,
-    "yaml.format.bracketSpacing": true,
-    "yaml.validate": true,
-    "yaml.hover": true,
-    "yaml.completion": true,
-    "suggest.echodocSupport": true
 }
