@@ -1,34 +1,5 @@
-call plug#begin()
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'flazz/vim-colorschemes'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'wellsjo/vim-save-cursor-position'
-Plug 'thinca/vim-visualstar'
-Plug 'airblade/vim-gitgutter'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'Shougo/echodoc.vim',
-Plug 'chrisbra/Colorizer'
-Plug 'eapache/rainbow_parentheses.vim'
-Plug 'hashivim/vim-terraform'
-Plug 'lervag/vimtex'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Plug 'jodosha/vim-godebug'
-call plug#end()
-
-
-" highlight all tabs and trailing whitespace characters.
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-match ExtraWhitespace /\s\+$\ "|\t/
-"clipboard
-set clipboard=unnamed
-
 " Appearance
 set cmdheight=2
-set number " line numbers
 set wrap
 set textwidth=0 wrapmargin=0
 set linebreak
@@ -37,20 +8,11 @@ set ruler
 set showcmd
 set colorcolumn=100
 
+" set listchars=tab:▷▷⋮
+" set invlist
+
 " As you go substitution
 set inccommand=split
-
-" Rebinds
-let mapleader = "\<Space>"
-nnoremap <leader>e :Explore<CR>
-nnoremap <leader>v :vsplit<CR>
-nnoremap <leader>s :split<CR>
-nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
-nnoremap <Leader>b :bnext<CR>
-nnoremap <Leader>p :bprevious<CR>
-nnoremap <Leader>g :tabnext<CR>
-nnoremap <Leader>r :GoReferrers<CR>
-nnoremap <Leader>i :set foldmethod=indent<CR>
 nmap <silent> gi :GoInfo<CR>
 
 " Window navigation
@@ -68,16 +30,12 @@ set expandtab
 set shiftwidth=4
 set tabstop=3
 
-set ignorecase
-set smartcase
 let g:terminal_scrollback_buffer_size = 10000
 
 set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 		  \,sm:block-blinkwait175-blinkoff150-blinkon175
 
-set mouse=a
-set shortmess=a
 
 " Airline
 " autocmd VimEnter * AirlineToggleWhitespace
@@ -90,22 +48,12 @@ set shortmess=a
 " let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 " let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
-au TextYankPost * silent! lua vim.highlight.on_yank()
-
-" coc.vim
-" Highlight the symbol and its references when holding the cursor
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
 " if hidden is not set, TextEdit might fail.
 set hidden
 " Better display for messages
 set cmdheight=3
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -121,18 +69,18 @@ set signcolumn=yes
 " endfunction
 
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+" inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use `[c` and `]c` to navigate diagnostics
 " nmap <silent> [c <Plug>(coc-diagnostic-prev)
 " nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
+" nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for rename current word
 " nmap <leader>rn <Plug>(coc-rename)
@@ -149,8 +97,8 @@ nmap <leader>rn <Plug>(coc-rename)
 " Do default action for previous item.
 " nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -161,10 +109,6 @@ function! s:show_documentation()
 endfunction
 
 " end coc.vim
-
-set completeopt+=noselect
-
-" let g:python3_host_prog = '/usr/local/bin/python'
 
 " go stuff
 " disable vim-go :GoDef short cut (gd)
@@ -184,16 +128,15 @@ let g:go_highlight_types = 1
 
 
 " rainbow
-" let g:rainbow_active = 1
-let g:rbpt_colorpairs = [
-    \ ['brown',       'SeaGreen3'],
-    \ ['gray',        'firebrick3'],
-    \ ['cyan',        'DarkOrchid3'],
-    \ ]
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+" let g:rbpt_colorpairs = [
+"     \ ['brown',       'SeaGreen3'],
+"     \ ['gray',        'firebrick3'],
+"     \ ['cyan',        'DarkOrchid3'],
+"     \ ]
+" au VimEnter * RainbowParenthesesToggle
+" au Syntax * RainbowParenthesesLoadRound
+" au Syntax * RainbowParenthesesLoadSquare
+" au Syntax * RainbowParenthesesLoadBraces
 
 "" stuff i stole from joachim
 " --------------------------
@@ -298,14 +241,19 @@ let g:vimtex_quickfix_latexlog = {
             \}
 
 """ end vimtex
-
-" let g:colorizer_auto_filetype='go,css,html,js'
-
-" Prevent vimgo from auto folding on save
-" augroup remember_folds
-"   autocmd!
-"   autocmd BufWinLeave * mkview
-"   autocmd BufWinEnter * silent! loadview
-" augroup END
-"
 let $GINKGO_EDITOR_INTEGRATION = "true"
+
+" firevim
+" function! OnUIEnter(event) abort
+"     set guifont=monospace:h12
+"     set lines=28 columns=110
+" endif
+" endfunction
+" autocmd UIEnter * call OnUIEnter(deepcopy(v:event))
+" let g:firenvim_config.localSettings['.*'] = { takeover = 'never' }
+"" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>e :Explore<CR>
