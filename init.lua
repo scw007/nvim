@@ -99,10 +99,7 @@ require('lazy').setup({
   },
 
   {
-    -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
     main = 'ibl',
     opts = {},
   },
@@ -177,7 +174,7 @@ vim.o.updatetime = 250
 vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
+-- vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 -- vim.keymap.set('n', '<leader>e', ':Explore<CR>')
