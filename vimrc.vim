@@ -1,30 +1,14 @@
 " Appearance
-set cmdheight=1
-set textwidth=0 wrapmargin=0
-
-set wrap
 set linebreak
 set breakindent
 set showbreak
 
-set ruler
-set showcmd
 set colorcolumn=120
 
 " As you go substitution
 set inccommand=split
 nmap <silent> gi :GoInfo<CR>
 
-" Window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-" nvim terminal mode stuff
-tnoremap <C-h> <C-\><C-n><C-w>h
-tnoremap <C-j> <C-\><C-n><C-w>j
-tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-l> <C-\><C-n><C-w>l
 
 set expandtab
 set shiftwidth=4
@@ -36,8 +20,6 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 		  \,sm:block-blinkwait175-blinkoff150-blinkon175
 
-" if hidden is not set, TextEdit might fail.
-set hidden
 " Better display for messages
 set cmdheight=3
 " don't give |ins-completion-menu| messages.
@@ -175,12 +157,6 @@ let g:vimtex_quickfix_latexlog = {
 """ end vimtex
 let $GINKGO_EDITOR_INTEGRATION = "true"
 
-" firevim
-" function! OnUIEnter(event) abort
-"     set guifont=monospace:h12
-"     set lines=28 columns=110
-" endif
-" endfunction
-" autocmd UIEnter * call OnUIEnter(deepcopy(v:event))
-" let g:firenvim_config.localSettings['.*'] = { takeover = 'never' }
 nnoremap <leader>e :Explore<CR>
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/

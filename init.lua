@@ -40,10 +40,7 @@ require('lazy').setup({
   {'neovim/nvim-lspconfig'},
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/nvim-cmp'},
-  {'L3MON4D3/LuaSnip'},
-
-  -- Useful plugin to show you pending keybinds.
-  -- { 'folke/which-key.nvim', opts = {} },
+  -- {'L3MON4D3/LuaSnip'},
 
   -- Adds git related signs to the gutter, as well as utilities for managing changes
   {
@@ -174,7 +171,7 @@ vim.o.updatetime = 250
 vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
--- vim.o.termguicolors = true
+vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 -- vim.keymap.set('n', '<leader>e', ':Explore<CR>')
@@ -224,32 +221,36 @@ pcall(require('telescope').load_extension, 'fzf')
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer' })
+-- vim.keymap.set('n', '<leader>/', function()
+--   -- You can pass additional configuration to telescope to change theme, layout, etc.
+--   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+--     winblend = 10,
+--     previewer = false,
+--   })
+-- end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+-- vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+-- vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+-- vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
+-- vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+-- vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+-- vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
--- vim.defer_fn(function()
---   require('nvim-treesitter.configs').setup {
---     -- Add languages to be installed here that you want installed for treesitter
---     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+vim.defer_fn(function()
+  require('nvim-treesitter.configs').setup {
+    -- Add languages to be installed here that you want installed for treesitter
+    ensure_installed = {
+      'c', 'cpp',
+      -- 'go',
+      'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash',
+    },
 
---     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
---     auto_install = false,
+    -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
+    auto_install = true,
 
 --     highlight = { enable = true },
 --     indent = { enable = true },
@@ -306,8 +307,8 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 --         },
 --       },
 --     },
---   }
--- end, 0)
+  }
+end, 0)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -359,6 +360,24 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
+
+-- mappings for terminal mode
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
+
+vim.keymap.set('t', '<A-h>', [[<C-\><C-N><C-w>h]])
+vim.keymap.set('t', '<A-j>', [[<C-\><C-N><C-w>j]])
+vim.keymap.set('t', '<A-k>', [[<C-\><C-N><C-w>k]])
+vim.keymap.set('t', '<A-l>', [[<C-\><C-N><C-w>l]])
+
+vim.keymap.set('i', '<A-h>', [[<C-\><C-N><C-w>h]])
+vim.keymap.set('i', '<A-j>', [[<C-\><C-N><C-w>j]])
+vim.keymap.set('i', '<A-k>', [[<C-\><C-N><C-w>k]])
+vim.keymap.set('i', '<A-l>', [[<C-\><C-N><C-w>l]])
+
+vim.keymap.set('n', '<A-h>', [[<C-w>h]])
+vim.keymap.set('n', '<A-j>', [[<C-w>j]])
+vim.keymap.set('n', '<A-k>', [[<C-w>k]])
+vim.keymap.set('n', '<A-l>', [[<C-w>l]])
 
 -- document existing key chains
 -- require('which-key').register {
@@ -475,8 +494,6 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
---
---
 local lsp_zero = require('lsp-zero')
 
 lsp_zero.on_attach(function(client, bufnr)
@@ -486,7 +503,11 @@ lsp_zero.on_attach(function(client, bufnr)
 end)
 
 require'lspconfig'.gopls.setup{}
+require'lspconfig'.tsserver.setup{}
+require'lspconfig'.pylyzer.setup{}
+require'lspconfig'.golangci_lint_ls.setup{}
 
+vim.cmd("colorscheme sorbet")
 
 -- load my old stuff
 local vimrc = vim.fn.stdpath("config") .. "/vimrc.vim"
