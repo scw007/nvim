@@ -1,57 +1,4 @@
-" Appearance
-set linebreak
-set breakindent
 set showbreak
-
-set colorcolumn=120
-
-" As you go substitution
-set inccommand=split
-nmap <silent> gi :GoInfo<CR>
-
-
-set expandtab
-set shiftwidth=4
-set tabstop=3
-
-let g:terminal_scrollback_buffer_size = 10000
-
-set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-		  \,sm:block-blinkwait175-blinkoff150-blinkon175
-
-" Better display for messages
-set cmdheight=3
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" go stuff
-" disable vim-go :GoDef short cut (gd)
-" this is handled by LanguageClient [LC]
-let g:go_def_mapping_enabled = 0
-" let g:go_list_type = "quickfix"
-" go highlight extras
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_types = 1
-
-
-" rainbow
-let g:rbpt_colorpairs = [
-    \ ['brown',       'SeaGreen3'],
-    \ ['gray',        'firebrick3'],
-    \ ['cyan',        'DarkOrchid3'],
-    \ ]
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 "" stuff i stole from joachim
 " --------------------------
@@ -75,13 +22,6 @@ endfunction
 function! StripTrailingWhiteSpace()
   call Preserve("%s/\\s\\+$//e")
 endfunction
-
-set splitbelow " New splits open below and right
-set splitright
-set fillchars=vert:\│  " No character in split separator
-
-let g:matchup_matchparen_deferred = 1
-let g:matchup_matchparen_hi_surround_always = 1
 
 " -----------------------------------------------------------------------------
 "  VIMTEX OPTIONS
@@ -155,8 +95,3 @@ let g:vimtex_quickfix_latexlog = {
             \}
 
 """ end vimtex
-let $GINKGO_EDITOR_INTEGRATION = "true"
-
-nnoremap <leader>e :Explore<CR>
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/

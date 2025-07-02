@@ -36,11 +36,47 @@ require('lazy').setup({
   -- 'chrisbra/Colorizer',
   'hashivim/vim-terraform',
 
+  {
+     "L3MON4D3/LuaSnip",
+     -- follow latest release.
+     version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+     -- install jsregexp (optional!).
+     build = "make install_jsregexp"
+  },
+
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+      {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
+    },
+    lazy = false, -- neo-tree will lazily load itself
+    -- -@module "neo-tree"
+    -- -@type neotree.Config?
+    opts = {
+      -- fill any relevant options here
+    },
+  },
+
+  "mrbjarksen/neo-tree-diagnostics.nvim",
+
   {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
   {'neovim/nvim-lspconfig'},
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/nvim-cmp'},
-  -- {'L3MON4D3/LuaSnip'},
+  {
+    "joshuavial/aider.nvim",
+    opts = {
+      -- your configuration comes here
+      -- if you don't want to use the default settings
+      auto_manage_context = true, -- automatically manage buffer context
+      default_bindings = true,    -- use default <leader>A keybindings
+      debug = false,              -- enable debug logging
+    },
+  },
 
   -- Adds git related signs to the gutter, as well as utilities for managing changes
   {
@@ -503,11 +539,156 @@ lsp_zero.on_attach(function(client, bufnr)
 end)
 
 require'lspconfig'.gopls.setup{}
-require'lspconfig'.tsserver.setup{}
 require'lspconfig'.pylyzer.setup{}
-require'lspconfig'.golangci_lint_ls.setup{}
+require'lspconfig'.bashls.setup{}
+-- require'lspconfig'.golangci_lint_ls.setup{}
+-- require'lspconfig'.terraform_lsp.setup{} # TODO get working
+require'lspconfig'.html.setup{}
+require'lspconfig'.yamlls.setup{}
+require'lspconfig'.jdtls.setup{}
 
 vim.cmd("colorscheme sorbet")
+
+require("neo-tree").setup({
+  sources = {
+    "filesystem",
+    "buffers",
+    "git_status",
+    "diagnostics",
+    -- ...and any additional source
+  },
+  -- These are the defaults
+  diagnostics = {
+    auto_preview = { -- May also be set to `true` or `false`
+      enabled = false, -- Whether to automatically enable preview mode
+      preview_config = {}, -- Config table to pass to auto preview (for example `{ use_float = true }`)
+      event = "neo_tree_buffer_enter", -- The event to enable auto preview upon (for example `"neo_tree_window_after_open"`)
+    },
+    bind_to_cwd = true,
+    diag_sort_function = "severity", -- "severity" means diagnostic items are sorted by severity in addition to their positions.
+                                     -- "position" means diagnostic items are sorted strictly by their positions.
+                                     -- May also be a function.
+    follow_current_file = { -- May also be set to `true` or `false`
+      enabled = true, -- This will find and focus the file in the active buffer every time
+      always_focus_file = false, -- Focus the followed file, even when focus is currently on a diagnostic item belonging to that file
+      expand_followed = true, -- Ensure the node of the followed file is expanded
+      leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+      leave_files_open = false, -- `false` closes auto expanded files, such as with `:Neotree reveal`
+    },
+    group_dirs_and_files = true, -- when true, empty folders and files will be grouped together
+    group_empty_dirs = true, -- when true, empty directories will be grouped together
+    show_unloaded = true, -- show diagnostics from unloaded buffers
+    refresh = {
+      delay = 100, -- Time (in ms) to wait before updating diagnostics. Might resolve some issues with Neovim hanging.
+      event = "vim_diagnostic_changed", -- Event to use for updating diagnostics (for example `"neo_tree_buffer_enter"`)
+                                        -- Set to `false` or `"none"` to disable automatic refreshing
+      max_items = 10000, -- The maximum number of diagnostic items to attempt processing
+                         -- Set to `false` for no maximum
+    },
+  },
+})
+
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    -- Open NeoTree when Neovim starts
+    vim.cmd("Neotree")
+    vim.cmd("Neotree diagnostics bottom")
+  end,
+})
+
+-- Appearance
+vim.opt.linebreak = true
+vim.opt.breakindent = true
+-- vim.opt.showbreak = "↪ "  -- You can customize this symbol
+
+vim.opt.colorcolumn = "120"
+
+-- As-you-go substitution
+vim.opt.inccommand = "split"
+
+-- Key mapping
+vim.api.nvim_set_keymap("n", "gi", ":GoInfo<CR>", { noremap = true, silent = true })
+
+-- Indentation
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 3
+
+-- Terminal scrollback buffer size
+vim.g.terminal_scrollback_buffer_size = 10000
+
+-- GUI cursor settings
+vim.opt.guicursor = {
+  "n-v-c:block",
+  "i-ci-ve:ver25",
+  "r-cr:hor20",
+  "o:hor50",
+  "a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor",
+  "sm:block-blinkwait175-blinkoff150-blinkon175"
+}
+
+-- Better display for messages
+vim.opt.cmdheight = 3
+vim.opt.shortmess:append("c")
+
+-- Go plugin settings
+vim.g.go_def_mapping_enabled = 0
+-- vim.g.go_list_type = "quickfix" -- Uncomment if needed
+vim.g.go_highlight_build_constraints = 1
+vim.g.go_highlight_extra_types = 1
+vim.g.go_highlight_fields = 1
+vim.g.go_highlight_functions = 1
+vim.g.go_highlight_function_calls = 1
+vim.g.go_highlight_methods = 1
+vim.g.go_highlight_operators = 1
+vim.g.go_highlight_structs = 1
+vim.g.go_highlight_types = 1
+
+-- Rainbow Parentheses
+vim.g.rbpt_colorpairs = {
+  {"brown", "SeaGreen3"},
+  {"gray", "firebrick3"},
+  {"cyan", "DarkOrchid3"},
+}
+
+-- Autocommands for Rainbow Parentheses
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  command = "RainbowParenthesesToggle"
+})
+
+vim.api.nvim_create_autocmd("Syntax", {
+  pattern = "*",
+  command = "RainbowParenthesesLoadRound"
+})
+
+vim.api.nvim_create_autocmd("Syntax", {
+  pattern = "*",
+  command = "RainbowParenthesesLoadSquare"
+})
+
+vim.api.nvim_create_autocmd("Syntax", {
+  pattern = "*",
+  command = "RainbowParenthesesLoadBraces"
+})
+
+-- Split behavior
+vim.opt.splitbelow = true  -- New horizontal splits open below
+vim.opt.splitright = true  -- New vertical splits open to the right
+
+-- Fill characters for window separators
+vim.opt.fillchars:append({ vert = "│" })
+
+-- Environment variable
+vim.env.GINKGO_EDITOR_INTEGRATION = "true"
+
+-- Key mapping for file explorer
+vim.keymap.set("n", "<leader>e", ":Explore<CR>", { noremap = true, silent = true })
+
+-- Highlight trailing whitespace
+vim.cmd([[highlight ExtraWhitespace ctermbg=red guibg=red]])
+vim.cmd([[match ExtraWhitespace /\s\+$/]])
 
 -- load my old stuff
 local vimrc = vim.fn.stdpath("config") .. "/vimrc.vim"
