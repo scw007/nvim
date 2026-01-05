@@ -41,10 +41,53 @@ require('lazy').setup({
     },
   },
 
+  {
+    "luukvbaal/statuscol.nvim",
+    config = function()
+      -- Custom function to show both absolute and relative line numbers
+      local function lnum_both()
+        local lnum = vim.v.lnum
+        local relnum = vim.v.lnum == vim.fn.line(".") and 0 or math.abs(vim.v.lnum - vim.fn.line("."))
+        return string.format("%3d %2d", lnum, relnum)
+      end
+      require("statuscol").setup({
+        setopt = true,
+        segments = {
+          {
+            sign = {
+              namespace = { "gitsigns.*" },
+              name = { "gitsigns.*" },
+            },
+          },
+          {
+            sign = {
+              namespace = { ".*" },
+              name = { ".*" },
+              auto = true,
+            },
+          },
+          {
+            text = { lnum_both, " " },
+            condition = { true },
+            click = "v:lua.ScLa",
+          },
+        },
+      })
+    end,
+  },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      statuscolumn = { enabled = false }
+    },
+  },
+
+
   {'neovim/nvim-lspconfig'},
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/nvim-cmp'},
   {'echasnovski/mini.nvim', version = '*'},
+  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
 
   {
     'lewis6991/gitsigns.nvim',
@@ -175,6 +218,7 @@ vim.o.updatetime = 250
 -- vim.o.timeoutlen = 300
 vim.o.completeopt = 'fuzzy,menu,menuone,noinsert,popup,preview'
 vim.o.termguicolors = true
+require("bufferline").setup{}
 
 vim.opt.linebreak = true
 vim.opt.breakindent = true
